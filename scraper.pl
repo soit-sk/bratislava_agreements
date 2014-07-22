@@ -7,7 +7,7 @@ use warnings;
 
 # Modules.
 use Database::DumpTruck;
-use Encode qw(decode_utf8 encode_utf8);
+use Encode qw(decode_utf8);
 use English;
 use HTML::TreeBuilder;
 use LWP::UserAgent;
