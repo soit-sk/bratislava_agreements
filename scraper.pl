@@ -61,8 +61,8 @@ while (1) {
 		# Direct link to PDF.
 		if ($page_uri->query_param('id_dokumenty')) {
 			$dt->insert({
-				'Page id' => undef,
-				'Document id' => $page_uri
+				'Page_id' => undef,
+				'Document_id' => $page_uri
 					->query_param('id_dokumenty'),
 				'Date' => $db_date,
 				'Title' => $a->as_text,
@@ -81,8 +81,8 @@ while (1) {
 				my $pdf_uri = URI->new($page_uri->scheme.'://'.
 					$page_uri->host.$pdf_a->attr('href'));
 				$dt->insert({
-					'Page id' => $page_uri->query_param('id'),
-					'Document id' => $pdf_uri
+					'Page_id' => $page_uri->query_param('id'),
+					'Document_id' => $pdf_uri
 						->query_param('id_dokumenty'),
 					'Date' => $db_date,
 					'Title' => $a->as_text,
