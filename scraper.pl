@@ -53,7 +53,11 @@ while (1) {
 	foreach my $tr (@tr) {
 		my ($date_td, $td) = $tr->find_by_tag_name('td');
 		my $a = $td->find_by_tag_name('strong')->find_by_tag_name('a');
-		my @note = $td->find_by_tag_name('div')->content_list;
+		my $note_div = $td->find_by_tag_name('div');
+		my @note;
+		if (defined $note_div) {
+			@note = $td->find_by_tag_name('div')->content_list;
+		}
 		my $page_uri = URI->new($base_uri->scheme.'://'.
 			$base_uri->host.$a->attr('href'));
 		my $db_date = get_db_date($date_td->as_text);
@@ -66,7 +70,7 @@ while (1) {
 					->query_param('id_dokumenty'),
 				'Date' => $db_date,
 				'Title' => $a->as_text,
-				'Note' => $note[0],
+				'Note' => $note[0] || '',
 				'PDF' => $page_uri->as_string,
 			});
 
