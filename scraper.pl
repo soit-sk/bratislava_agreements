@@ -64,7 +64,7 @@ while (1) {
 
 		# Direct link to PDF.
 		if ($page_uri->query_param('id_dokumenty')) {
-			$dt->insert({
+			insert({
 				'Page_id' => undef,
 				'Document_id' => $page_uri
 					->query_param('id_dokumenty'),
@@ -84,7 +84,7 @@ while (1) {
 					->find_by_tag_name('a');
 				my $pdf_uri = URI->new($page_uri->scheme.'://'.
 					$page_uri->host.$pdf_a->attr('href'));
-				$dt->insert({
+				insert({
 					'Page_id' => $page_uri->query_param('id'),
 					'Document_id' => $pdf_uri
 						->query_param('id_dokumenty'),
@@ -127,4 +127,20 @@ sub get_db_date {
 	my ($day, $mon, $year) = split m/\./ms, $html_date;
 	my $time = timelocal(0, 0, 0, $day, $mon - 1, $year - 1900);
 	return strftime('%Y-%m-%d', localtime($time));
+}
+
+# Insert.
+sub insert {
+	my $insert_hr = shift;
+	my $ret_ar = eval {
+		$dt->execute('SELECT COUNT(*) FROM data WHERE Document_id = ?',
+			$insert_hr->{'Document_id'});
+	};
+	if ($EVAL_ERROR || ! @{$ret_ar} || ! exists $ret_ar->[0]->{'count(*)'}
+		|| ! defined $ret_ar->[0]->{'count(*)'}
+		|| $ret_ar->[0]->{'count(*)'} == 0) {
+
+		print "Document #$insert_hr->{'Document_id'}\n";
+		$dt->insert($insert_hr);
+	}
 }
