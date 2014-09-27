@@ -114,7 +114,7 @@ sub get_root {
 	if ($get->is_success) {
 		$data = $get->content;
 	} else {
-		die "Cannot GET '".$uri->as_string." page.";
+		die "Cannot GET '".$uri->as_string."' page.";
 	}
 	my $tree = HTML::TreeBuilder->new;
 	$tree->parse(decode_utf8($data));
